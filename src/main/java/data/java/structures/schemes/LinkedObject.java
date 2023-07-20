@@ -7,11 +7,11 @@ FiFo >> default adding at last
 
 public class LinkedObject {
     private class Node{
-        Object data;
+        String data;
         Node beside;
 
         public Node(){}
-        public Node(Object obj){
+        public Node(String obj){
             this.data=obj;
             this.beside=null;
         }
@@ -22,7 +22,7 @@ public class LinkedObject {
         head=null;
     }
 
-    public void addAtBegin(Object obj){
+    public void addAtBegin(String obj){
         Node userNode=new Node(obj);
 
         if(head==null){
@@ -36,7 +36,7 @@ public class LinkedObject {
     }
 
     // add / addLast
-    public void add(Object obj){
+    public void add(String obj){
         Node userNode=new Node(obj);
         if(head==null){
             head=userNode;
@@ -52,7 +52,7 @@ public class LinkedObject {
         }
     }
 
-    public void addAtPosition(Object obj, int position){
+    public void addAtPosition(String obj, int position){
         Node userNode=new Node(obj);
         if(head==null){
             head=userNode;
@@ -159,40 +159,98 @@ public class LinkedObject {
         }
     }
 
+    public Node findMid(Node start,Node end){
+        if(start==null)
+            return null;
+        Node alpha=start;
+        Node beta=start.beside;
+
+        while(beta!=end){
+            beta=beta.beside;
+            if(beta!=end){
+                alpha=alpha.beside;
+                beta=beta.beside;
+            }
+        }
+        return alpha;
+    }
+
+    public Node binarySearch(Node current,String users){
+        Node start=current;
+        Node end=null;
+
+        do{
+            Node midNode=findMid(start,end);
+            if(midNode==null)
+                return null;
+            if(midNode.data.equals(users))
+                return midNode;
+            else if(midNode.data.compareTo(users)>0)
+                end=midNode;
+            else
+                start=midNode.beside;
+
+        }while(end==null||end!=start);
+
+        return null;
+    }
+
+    public void sort(){
+        // selection sort
+        Node hold=head;
+        while(hold!=null){
+            Node compare=hold.beside;
+            while(compare!=null){
+                if(hold.data.compareTo(compare.data)>0){
+                    String third=hold.data;
+                    hold.data= compare.data;;
+                    compare.data=third;
+                }
+                compare=compare.beside;
+            }
+            hold=hold.beside;
+        }
+    }
+
     public static void main(String[] args) {
         LinkedObject linkedObject=new LinkedObject();
-        linkedObject.addAtBegin(90.5);
-        linkedObject.addAtBegin(false);
-        linkedObject.addAtBegin('Q');
+        linkedObject.addAtBegin("90.5");
+        linkedObject.addAtBegin("false");
+        linkedObject.addAtBegin("Q");
         linkedObject.addAtBegin("Zealous");
 
         linkedObject.traverse();
         // add at last
-        linkedObject.add(true);
+        linkedObject.add("true");
         linkedObject.add("Vineth");
 
-        linkedObject.traverse();
+        //linkedObject.traverse();
 
         linkedObject.addAtPosition("Spring",2);
 
         linkedObject.traverse();
 
-        linkedObject.remove();
-
+//        linkedObject.remove();
+//
+//        linkedObject.traverse();
+//
+//        linkedObject.removeLast();
+//
+//        linkedObject.traverse();
+//
+//        linkedObject.removeAtPosition(4);
+//
+//        linkedObject.traverse();
+//
+//        linkedObject.readBegin();
+//
+//        linkedObject.readLast();
+//
+//        linkedObject.readAtPosition(3);
+        linkedObject.sort();
         linkedObject.traverse();
 
-        linkedObject.removeLast();
-
-        linkedObject.traverse();
-
-        linkedObject.removeAtPosition(4);
-
-        linkedObject.traverse();
-
-        linkedObject.readBegin();
-
-        linkedObject.readLast();
-
-        linkedObject.readAtPosition(3);
+        Node receiver = linkedObject.binarySearch(linkedObject.head, "Zealous");
+        System.out.println(receiver.data+" resides right beside the "+receiver.beside.data);
     }
 }
