@@ -67,19 +67,57 @@ Heap sort:
 public class Heap {
 
     public static void heapify(double[] arr,int length, int parent){
+        int maximum=parent;
 
+        int left=parent*2+1;
+        int right=parent*2+2;
+
+        if(left<length&&arr[left]>arr[maximum]){
+            maximum=left;
+        }
+        if(right<length&&arr[right]>arr[maximum]){
+            maximum=right;
+        }
+
+        if(maximum!=parent){
+            double third=arr[maximum];
+            arr[maximum]=arr[parent];
+            arr[parent]=third;
+//            arr[maximum]*=arr[parent];
+//            arr[parent]=arr[maximum]/arr[parent];
+//            arr[maximum]/=arr[parent];
+            heapify(arr,length,maximum);
+        }
+    }
+
+    public static void sortHeap(double[] arr){
+        for(int index=arr.length/2-1;index>=0;index--){
+            heapify(arr, arr.length, index);
+        }
+        for(int position=arr.length-1; position>=0;position-- ){
+            double third=arr[0];
+            arr[0]=arr[position];
+            arr[position]=third;
+//            arr[0]*=arr[position];
+//            arr[position]=arr[0]/arr[position];
+//            arr[0]/=arr[position];
+            heapify(arr,position,0);
+        }
     }
 
     public static void show(double[] arr, int index){
-        if(index<arr.length){
-            System.out.println(arr[index]);
+        if(index<arr.length) {
+            System.out.print(arr[index] + " ");
             index++;
-            show(arr,index);
+            show(arr, index);
         }
     }
 
     public static void main(String[] args) {
         double[] myData={3.4,9.2,1.12,12.09,4.5,7.2};
+        show(myData,0);
+        System.out.println();
+        sortHeap(myData);
         show(myData,0);
     }
 }
